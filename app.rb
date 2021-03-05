@@ -20,6 +20,9 @@ get('/konto') do
   slim(:konto)
 end
 
+get('/kontakt') do
+  slim(:kontakt)
+end
 
 get('/about') do
   slim(:about)
