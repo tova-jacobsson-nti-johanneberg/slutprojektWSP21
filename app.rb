@@ -8,6 +8,11 @@ get('/') do
     slim(:index)
 end
 
+get('/admin') do
+  slim(:admin)
+end
+
+
 get('/login') do
     slim(:login)
  end
@@ -41,12 +46,18 @@ post('/login') do
     pwdigest = result["pwdigest"]
     id = result["id"]
   
-    if BCrypt::Password.new(pwdigest) == password
+    if BCrypt::Password.new(pwdigest) == password 
+      if username == "admin" 
+        session[:id] = id
+        redirect('/admin')
+      else 
       session[:id] = id
       redirect('/konto')
+      end
     else 
       "FEL LÖSEN!"
     end 
+
   end 
   
   get('/handla') do 
@@ -56,6 +67,15 @@ post('/login') do
     result = db.execute("SELECT * FROM  WHERE paket_id = ?", id)
     slim(:"/handla",locals:{paket:result})
   end 
+
+  post('/handla/new') do 
+    paket = params[:paket]
+    id = session[:id].to_i
+    db = SQLite3::Database.new('db/databas.db')
+    db.execute("INSERT INTO paket (paketnamn,paketid) VALUES (?,?)",paketnamn,paketid)
+    redirect('/admin')
+  end 
+  
   
   post('/users/new') do
     username = params[:username]
@@ -85,6 +105,6 @@ post('/login') do
    # result = db.execute("SELECT * FROM users WHERE username = ?", username).first
     #pwdigest = result["pwdigest"]
    #id = result["id"]
-   redirect ('/uppgifter')
    
   end 
+
