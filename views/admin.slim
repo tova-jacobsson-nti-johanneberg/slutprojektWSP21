@@ -1,0 +1,19 @@
+h2 Alla tillgängliga paket 
+
+
+form action='paket' method="post"
+    input type="text" name="paket" placeholder="Nytt paket"
+    
+ol
+    - paket.each do |paket| 
+        li 
+            p = paket["paketnamn"]
+            form action="paket/delete" method="POST" 
+                input type="hidden" name="number" value="#{paket["id"]}"
+                input type="submit" value="Delete"
+            form action="paket/edit" method="POST"
+                input type="hidden" name="number" value="#{paket["id"]}"
+                input type="text" name="content" placeholder="Skriv uppdaterad paket info"
+                input type="submit" value="Ändra" 
+            
+end 
