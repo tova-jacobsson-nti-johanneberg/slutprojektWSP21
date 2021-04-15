@@ -37,6 +37,8 @@ get('/galleri') do
   slim(:galleri)
 end
 
+
+
 post('/login') do 
     username = params[:username]
     password = params[:password]
@@ -64,7 +66,7 @@ post('/login') do
     id = session[:id].to_i
     db = SQLite3::Database.new('databas/databas.db')
     db.results_as_hash = true 
-    result = db.execute("SELECT * FROM  WHERE paket_id = ?", id)
+    result = db.execute("SELECT * FROM paket")
     slim(:"/handla",locals:{paket:result})
   end 
 
